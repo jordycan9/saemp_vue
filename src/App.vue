@@ -19,17 +19,43 @@
           </v-list-item>
         </template>
 
-
-          <template v-if="esAdministrador">
-          <v-list-item :to="{name: ''}"  >
-            <v-list-item-action>
-              <v-icon>assignment_turned_in</v-icon>
-            </v-list-item-action>
-            <v-list-item-title>
-              Solicitudes
-            </v-list-item-title>
-          </v-list-item>
+        <template  v-if="esAdministrador">
+          <v-list-group>
+            <v-list-item slot="activator">
+               <v-list-item-action>
+                <v-icon>assignment_turned_in</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                
+                <v-list-item-title>
+                  Solicitudes de Acceso
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item :to="{name: 'solicitudes'}">
+              <v-list-item-action>
+                <v-icon>people</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>
+                  Cambios de Guardia
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            <v-list-item :to="{name: 'solicitud_unica_admin'}">
+              <v-list-item-action>
+                <v-icon>today</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>
+                  Solicitud Unica de Acceso
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>
         </template>
+
+      
         
         <template v-if="esAdministrador">
          
@@ -41,6 +67,38 @@
               <v-list-item-content>
                 <v-list-item-title>
                   Embarcacion
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            
+        </template>
+
+            <template v-if="esAPITAB">
+         
+            
+            <v-list-item :to="{name: 'solicitud_apitab'}">
+              <v-list-item-action>
+             <v-icon>work</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>
+                  Solicitudes
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+            
+        </template>
+
+          <template v-if="esAPITAB">
+         
+            
+            <v-list-item :to="{name: 'cambio_guardia_api'}">
+              <v-list-item-action>
+             <v-icon>people</v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>
+                  Cambio de Guardia
                 </v-list-item-title>
               </v-list-item-content>
             </v-list-item>
@@ -65,7 +123,7 @@
    
          
           <template v-if="esAdministrador">
-            <v-list-item :to="{name: 'solicitudUnica'}"  >
+            <v-list-item :to="{name: 'consultas'}"  >
                 <v-list-item-action>
                   <v-icon>folder_shared</v-icon>
                 </v-list-item-action>
@@ -86,13 +144,13 @@
                 </v-list-item-title>
             </v-list-item>
         </template>
-         <template v-if="esCliente || esAdministrador">
+         <template v-if="esCliente">
             <v-list-item :to="{name: 'cambios_guardia'}">
                 <v-list-item-action>
                   <v-icon>people</v-icon>
                 </v-list-item-action>
                 <v-list-item-title>
-                  Cambios de Guardia
+                  Solicitud de Cambios de Guardia
                 </v-list-item-title>
             </v-list-item>
         </template>
@@ -195,6 +253,9 @@ export default {
     },
      esCliente(){
       return this.$store.state.usuario && this.$store.state.usuario.rol == 'Cliente';
+    },
+     esAPITAB(){
+      return this.$store.state.usuario && this.$store.state.usuario.rol == 'APITAB';
     }
     
   },

@@ -24,7 +24,7 @@
           <v-spacer></v-spacer>
           <v-dialog v-model="dialog" max-width="500px">
             <template v-slot:activator="{ on }">
-              <v-btn color="primary" @click="limpiar" dark class="mb-2" v-on="on">Nuevo Usuario</v-btn>
+              <v-btn @click="limpiar" small  class="mb-2" v-on="on">Nuevo Usuario</v-btn>
             </template>
             <v-card>
               <v-card-title>
@@ -174,7 +174,7 @@ import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loade
             _id:'',
             nombre:'',
             rol:'',
-            roles:['Administrador','Cliente'],
+            roles:['Administrador','Cliente','APITAB'],
             empresa:'',
             email:'',
             direccion:'',
@@ -192,7 +192,7 @@ import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loade
     },
           computed: {
           formTitle () {
-            return this.editedIndex === -1 ? 'Nueva Embarcacion' : 'Editar Embarcacion'
+            return this.editedIndex === -1 ? 'Nuevo Usuario' : 'Editar Usuario'
           }
         },
 
@@ -279,6 +279,7 @@ import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loade
                });
              }else{
                //Nuevo
+               
                axios.post('usuario/add',
                 {
                     'nombre':this.nombre,

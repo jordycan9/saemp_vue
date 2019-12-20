@@ -43,6 +43,9 @@
                     <v-col cols="12" sm="12" md="12">
                       <v-text-field v-model="representante" label="Representante"></v-text-field>
                     </v-col>
+                      <v-col cols="12" sm="12" md="12">
+                      <v-text-field v-model="folio" label="Folio"></v-text-field>
+                    </v-col>
                    
                 
                      <v-col cols="12" sm="6" md="12" v-show="valida">
@@ -143,6 +146,7 @@ import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loade
                   agencias:[],
                 headers: [
                { text: 'Actions', value: 'action', sortable: false},
+              { text: 'Folio', value: 'folio', sortable: false},
                { text: 'Nombre', value: 'nombre', sortable:true},
                { text: 'RFC', value: 'rfc', sortable:true},
                { text: 'Representante', value: 'representante', sortable:true},
@@ -153,6 +157,7 @@ import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loade
             nombre:'',
             rfc:'',
             representante:'',
+            folio:'',
             valida:0,
             validaMensaje:[],
             adModal:0,
@@ -194,6 +199,9 @@ import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loade
               this.validaMensaje.push('El representante es obligatorio');
             }
             
+            if(this.folio.length<1){
+              this.validaMensaje.push('El folio es obligatorio');
+            }
             return this.valida;
           },
 
@@ -202,7 +210,7 @@ import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loade
             this.nombre='',
             this.rfc='',
             this.representante='',
-           
+            this.folio='',
             this.validaMensaje=[],
             this.editedIndex=-1;
           },
@@ -214,7 +222,7 @@ import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loade
               return;
             }
              if(this.editedIndex >-1 ){
-                axios.put('agencia/update',{'_id':this._id,'nombre':this.nombre,'rfc':this.rfc,'representante':this.representante},configuracion)
+                axios.put('agencia/update',{'_id':this._id,'nombre':this.nombre,'rfc':this.rfc,'representante':this.representante,'folio':this.folio},configuracion)
                .then(function(response){
                  me.limpiar();
                  me.close();
@@ -224,7 +232,7 @@ import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loade
                });
              }else{
                //Nuevo
-               axios.post('agencia/add',{'nombre':this.nombre,'rfc':this.rfc,'representante':this.representante},configuracion)
+               axios.post('agencia/add',{'nombre':this.nombre,'rfc':this.rfc,'representante':this.representante,'folio':this.folio},configuracion)
                .then(function(response){
                  me.limpiar();
                  me.close();
@@ -238,6 +246,7 @@ import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loade
             let header={"Token":this.$store.state.token};
             let configuracion= {headers: header}
             let me=this;
+               console.log(this.$store.state.token)
             axios.get('agencia/list',configuracion).then(function (response){
             me.agencias=response.data;
             }).catch(function(error){
@@ -250,8 +259,9 @@ import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loade
             this.nombre=item.nombre;
             this.rfc=item.rfc;
             this.representante=item.representante;
+            this.folio=item.folio
             this.editedIndex=1;
-
+            
             this.dialog = true
           },
 

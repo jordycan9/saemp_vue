@@ -12,6 +12,11 @@ import SolicitudUnica from '../components/SolicitudUnica.vue'
 import CambiosGuardia from '../components/CambiosGuardia.vue'
 import EstatusSolicitud from '../components/EstatusSolicitud'
 import Agencia from '../components/Agencia.vue'
+import Solicitudes from '../components/Solicitudes.vue'
+import Consultas from '../components/Consultas.vue'
+import SolicitudUnicaAdmin from '../components/SolicitudUnicaAdmin.vue'
+import SolicitudApitab from '../components/SolicitudApitab.vue'
+import CambioGuardiaApi from '../components/CambioGuardiaApi.vue'
 
 Vue.use(Router)
 
@@ -25,7 +30,8 @@ var router = new Router({
       component: Home,
       meta:{
         administrador:true,
-        cliente:true
+        cliente:true,
+        apitab:true
       }
     },
     {
@@ -38,6 +44,15 @@ var router = new Router({
       
     },
     {
+      path: '/solicitud_unica_admin',
+      name: 'solicitud_unica_admin',
+      component: SolicitudUnicaAdmin,
+      meta:{
+        administrador:true
+      }
+      
+    },
+    {
       path: '/pasajeros',
       name: 'pasajeros',
       component: Pasajeros,
@@ -46,6 +61,26 @@ var router = new Router({
       }
       
     },
+    {
+      path: '/solicitudes',
+      name: 'solicitudes',
+      component: Solicitudes,
+      meta:{
+        administrador:true
+      }
+      
+    },
+
+    {
+      path: '/consultas',
+      name: 'consultas',
+      component: Consultas,
+      meta:{
+        administrador:true
+      }
+      
+    },
+
     {
       path: '/agencia',
       name: 'agencia',
@@ -99,7 +134,28 @@ var router = new Router({
       meta:{
         libre:true
       }         
+    },
+
+    {
+      path: '/solicitud',
+      name: 'solicitud_apitab',
+      component: SolicitudApitab,
+      meta:{
+        apitab:true,
+       
+
+      }         
+    },
+    {
+      path: '/cambio_guardia',
+      name: 'cambio_guardia_api',
+      component: CambioGuardiaApi,
+      meta:{
+        apitab:true,
+       
+      }         
     }
+
   ]
 })
 
@@ -115,6 +171,11 @@ router.beforeEach((to,from,next)=>{
     if(to.matched.some(record => record.meta.cliente)){
       next()
     }   
+}
+else if(store.state.usuario && store.state.usuario.rol == 'APITAB'){
+  if(to.matched.some(record => record.meta.apitab)){
+    next()
+  }   
 }
 else{
     next({name:'login'});

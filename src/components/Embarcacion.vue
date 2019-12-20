@@ -12,8 +12,13 @@
         <v-card-text v-if="!item.estado" class="red--text">Inactivo</v-card-text>
       </template>
       <template v-slot:top>
+      
         <v-toolbar flat color="white">
-          <v-toolbar-title>Embarcaciones</v-toolbar-title>
+          <v-btn @click="crearPDF()">
+            <v-icon>print</v-icon>
+          </v-btn>
+          <v-toolbar-title> Embarcaciones</v-toolbar-title>
+            
           <v-divider
             class="mx-4"
             inset
@@ -151,6 +156,8 @@ fa fa-file-pdf-o
 </template>
 <script>
 import axios from 'axios';
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loader
 
   export default {
@@ -211,7 +218,42 @@ import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loade
 
         methods: {
 
-          
+          crearPDF(){
+            var columns = [
+              {title:'Nombre',dataKey:'nombre'},
+              {title:'Armador',dataKey:'armador'},
+              {title:'Tipo',dataKey:'tipo'},
+              {title:'TBR',dataKey:'tbr'},
+              {title:'TRN',dataKey:'trn'},
+              {title:'Eslora',dataKey:'eslora'},
+              {title:'Manga',dataKey:'manga'},
+              {title:'Calado',dataKey:'calado'}
+            ];
+            var rows = [];
+            this.embarcaciones.map((x)=>{
+              rows.push(
+                {
+                  nombre:x.nombre,
+                  armador:x.armador,
+                  tipo:x.tipo,
+                  tbr:x.tbr,
+                  trn:x.trn,
+                  eslora:x.eslora,
+                  manga:x.manga,
+                  calado:x.calado
+                }
+              );
+           })
+            var doc = new jsPDF('p','pt')
+            doc.autoTable(columns,rows,{
+              margin: {top:60},
+              addPageContent: function(data){
+                doc.text("Lista de Embarcaciones",40,30)
+              }
+            })
+            doc.save('embarcaciones.pdf')
+          },
+
 
           validar(){
             this.valida=0;
@@ -292,6 +334,7 @@ import 'font-awesome/css/font-awesome.min.css' // Ensure you are using css-loade
             let header={"Token":this.$store.state.token};
             let configuracion= {headers: header}
             let me=this;
+         
             axios.get('embarcacion/list',configuracion).then(function (response){
             me.embarcaciones=response.data;
             }).catch(function(error){
