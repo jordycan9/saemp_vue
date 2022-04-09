@@ -20,7 +20,7 @@
     "jspdf-autotable": "^3.2.11",
     "jwt-decode": "^2.2.0",
     "luxon": "^1.21.3",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "qr-image": "^3.2.0",
     "vue": "^2.6.10",
     "vue-filepond": "^5.1.3",
